@@ -10,12 +10,14 @@ def readJson():
 		content = load(f)
 	return content
 
+
 def index(request):
 	return render(request, 'mainapp/index.html')
 
+
 def products(request):
-	categories = ProductCategories.getCategories(ProductCategories)
-	products = Product.getProducts(Product)
+	categories = ProductCategories.objects.all()
+	products = Product.objects.all()
 	content = {
 		"categories" : categories,
 		"products" : products

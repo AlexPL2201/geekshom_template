@@ -10,12 +10,6 @@ class ProductCategories(models.Model):
 	def __str__(self):
 		return self.name
 
-	
-	def getCategories(self):
-		categoryList = []
-		for category in self.objects.all():
-			categoryList.append({"name" : category.name})
-		return categoryList
 
 
 class Product(models.Model):
@@ -30,9 +24,3 @@ class Product(models.Model):
 	def __str__(self):
 		return f'{self.name} | {self.category} | {self.price}' 
 
-
-	def getProducts(self):
-		productList = []
-		for product in self.objects.all():
-			productList.append({"name" : product.name, "price" : product.price, "description" : product.description, "image" : product.image})
-		return productList
