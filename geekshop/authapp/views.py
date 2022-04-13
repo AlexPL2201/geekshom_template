@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from authapp.forms import UserLoginForm, UserRegisterForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from django.urls import reverse
+from basket.models import Basket
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 def login(request):
@@ -15,10 +18,10 @@ def login(request):
 			if user.is_active:
 				auth.login(request, user)
 				return HttpResponseRedirect(reverse('index'))
-			else:
-				print('Юзер не активный')
-		else:
-			print(form.errors)
+		# 	else:
+		# 		print('Юзер не активный')
+		# else:
+		# 	print(form.errors)
 	else:
 		form = UserLoginForm
 
@@ -34,6 +37,7 @@ def register(request):
 		form = UserRegisterForm(data=request.POST)
 		if form.is_valid():
 			form.save()
+			messages.success(request, 'Вы успешно зарегестрировались!')
 			return HttpResponseRedirect(reverse('authapp:login'))
 		else:
 			print(form.errors)
@@ -46,6 +50,22 @@ def register(request):
 	}
 	return render(request, 'authapp/register.html', context)
 
+@login_required
+def profile(request):
+	if request.method == 'POST':
+		form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
+		if form.is_valid():
+			form.save()
+		else:
+			print(form.errors)
+
+	user_select = request.user
+	context = {
+		'title': 'Geekshop | Профиль',
+		'form' : UserProfileForm(instance=request.user),
+		'baskets' : Basket.objects.filter(user=user_select)
+	}
+	return render(request, 'authapp/profile.html', context)
 
 def logout(request):
 	auth.logout(request)
