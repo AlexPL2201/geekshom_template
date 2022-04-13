@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
-    'authapp'
+    'authapp',
+    'basket'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'authapp.User'
+LOGIN_URL = '/authapp/login/'
+LOGIN_REDIRECT_URL = '/'
