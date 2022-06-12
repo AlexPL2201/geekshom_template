@@ -41,7 +41,6 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         raise  AuthForbidden('social_core.backends.vk.VKOAuth2')
 
     user.age = age
-    print(data)
     langs = data['personal']['langs']
     if langs:
         user.userprofile.langs = langs[0] if len(langs[0]) > 0 else 'RU'
